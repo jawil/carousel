@@ -1,7 +1,7 @@
 #移动端轻量级无缝轮播图
 ###特点
 
-100行js轻量级无缝轮播图，不依赖任何框架，面向对象，麻雀虽小，五腑俱全。
+js仅100行的轻量级无缝轮播图，不依赖任何框架，面向对象，麻雀虽小，五腑俱全。
 
 ###使用方法：
 
@@ -15,8 +15,9 @@ new Slider('#sliderWrap', {
 
 ###预览地址
 
-[github地址](https://github.com/jawil/slider/tree/master/mobile)
-[在线预览地址](http://codepen.io/jawil/full/gmLwEz/)
+[github项目地址](https://github.com/jawil/slider/tree/master/mobile)
+
+[在线预览地址(PC请切换到移动模式)](http://codepen.io/jawil/full/gmLwEz/)
 
 ###预览图片
 
