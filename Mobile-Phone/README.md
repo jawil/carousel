@@ -15,7 +15,7 @@ new Slider('#sliderWrap', {
 
 ###预览地址
 
-[github项目地址](https://github.com/jawil/slider/tree/master/mobile)
+[github项目地址](https://github.com/jawil/slider/tree/master/Mobile-Phone)
 
 [在线预览地址(PC请切换到移动模式)](http://codepen.io/jawil/full/gmLwEz/)
 
