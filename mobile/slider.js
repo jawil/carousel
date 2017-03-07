@@ -2,7 +2,7 @@
      const DEFAULT_OPTIONS = { //默认参数
          auto: 1, //自动播放 1或0
          interval: 3000, //停顿时间
-         effect: 'ease-out' //运动效果，贝塞尔曲线
+         effect: 'ease-out' //transition运动效果，也可以是贝塞尔曲线
      }
      class Slider {
          constructor(el, options = {}) {
@@ -30,9 +30,10 @@
              this.touch_event()
          }
          get_element() { //获取元素对象
-             this.sliderContent = this.sliderWrap.querySelectorAll('ul')[0]
+             let oUl = this.sliderWrap.querySelectorAll('ul')
+             this.sliderContent = oUl[0]
              this.sliderContent.innerHTML += this.sliderContent.innerHTML
-             this.sliderFlag = this.sliderWrap.querySelectorAll('ul')[1]
+             this.sliderFlag = oUl[1]
              this.iWidth = this.sliderWrap.offsetWidth
              this.length = this.sliderContent.childElementCount
              this.sliderContent.style.width = `${this.length}00%`
@@ -57,7 +58,7 @@
                  }, 600)
              }, this.settings.interval)
          }
-         touch_event() { //手指滑动轮播图
+         touch_event() { //手指滑动轮播图,滑动距离超过一半才会运动到下一张
              let isMove = true
              let isFirst = true
              let touchStart, touchMove, touchEnd, iStartPageX, iStartPageY
@@ -81,13 +82,13 @@
                      }
                  }
                  if (isMove) {
-                     this.sliderContent.style.transition = 'none';
+                     this.sliderContent.style.transition = 'none'; //不清楚浏览器自动插入分号的规则千万不要学我
                      (this.index === 0) && (this.index = this.length / 2);
                      (this.index === this.length - 1) && (this.index = this.length / 2 - 1)
                      Slider.set_position(this.sliderContent, -this.index * this.iWidth + iDisX)
                  }
              }
-             touchEnd = (e) => {
+             touchEnd = e => {
                  let iDisX = e.changedTouches[0].pageX - iStartPageX
                  this.sliderContent.style.transition = `.5s ${ this.settings.effect}`
                  this.index = this.index - Math.round(iDisX / this.iWidth)
