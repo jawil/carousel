@@ -1,0 +1,58 @@
+@charset "UTF-8";
+
+/* CSS Document */
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#sliderWrap {
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    font-size: 0;
+    overflow: hidden;
+}
+
+#sliderWrap .slider-content {
+    height: 100%;
+    transition: 0.5s ease-out;
+    margin: 0;
+    padding: 0;
+}
+
+#sliderWrap .slider-content li {
+    height: 100%;
+    list-style: none;
+    display: inline-block;
+}
+
+#sliderWrap .slider-content li img {
+    width: 100%;
+    height: 100%;
+    vertical-align: top;
+}
+
+#sliderWrap .slider-flag {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+}
+
+#sliderWrap .slider-flag li {
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background-color: green;
+    display: inline-block;
+    margin: 0 4px;
+}
+
+#sliderWrap .slider-flag li.active {
+    background-color: red;
+}
