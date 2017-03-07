@@ -21,6 +21,6 @@ new Slider('#sliderWrap', {
 
 ###预览图片
 
-![img-w500](http://ww1.sinaimg.cn/mw690/a660cab2gy1fder4zd3uvj20hs0vkjsa)
+![img-w400](http://ww1.sinaimg.cn/mw690/a660cab2gy1fder4zd3uvj20hs0vkjsa)
 
 
