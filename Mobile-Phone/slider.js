@@ -12,19 +12,15 @@
              this.init_data()
          }
          static set_position(obj, dis) { //更改轮播图位置
-             obj.style.webkitTransform = `translate3d(${dis}px,0,0)`
+             obj.style.webkitTransform = `translate3d(${dis}px,0,0)` //兼容安卓版UC
              obj.style.transform = `translate3d(${dis}px,0,0)`
          }
          static set_focusIcon(obj, x) { //设置轮播图ICON焦点
-             for (let i = 0, len = obj.childElementCount; i < len; i++) {
-                 obj.children[i].className = ''
-             }
-             obj.children[x].className = 'active'
+             Array.from(obj.children).forEach((ele, index) =>
+                 ele.className = index === x ? 'active' : ''
+             )
          }
          init_data() { //初始化数据
-             document.addEventListener('touchstart', //阻止默认事件
-                 ev => ev.preventDefault()
-             )
              this.get_element()
              this.settings.auto === 1 && this.auto_play()
              this.touch_event()
@@ -48,7 +44,8 @@
                  this.index++;
                  this.sliderContent.style.transition = `.5s ${ this.settings.effect}`
                  Slider.set_position(this.sliderContent, -this.index * this.iWidth)
-                 Slider.set_focusIcon(this.sliderFlag, this.index % (this.length / 2))
+                 Slider.set_focusIcon(this.sliderFlag, this.index % (this.length / 2));
+                 (this.index === 0) && (this.index = this.length / 2) //为0时候立即初始化跳转
                  setTimeout(() => {
                      if (this.index === this.length - 1) {
                          this.sliderContent.style.transition = "none"
@@ -63,6 +60,8 @@
              let isFirst = true
              let touchStart, touchMove, touchEnd, iStartPageX, iStartPageY
              touchStart = e => {
+                 e.preventDefault()
+                 e.stopPropagation()
                  clearInterval(this.autotimer)
                  isMove = true
                  isFirst = true
@@ -91,7 +90,8 @@
              touchEnd = e => {
                  let iDisX = e.changedTouches[0].pageX - iStartPageX
                  this.sliderContent.style.transition = `.5s ${ this.settings.effect}`
-                 this.index = this.index - Math.round(iDisX / this.iWidth)
+                 this.index = this.index === this.length ?//防止诡异的越界，很难重现。。。
+                     (this.length / 2) : (this.index - Math.round(iDisX / this.iWidth))
                  Slider.set_position(this.sliderContent, -this.index * this.iWidth)
                  Slider.set_focusIcon(this.sliderFlag, this.index % (this.length / 2))
                  this.auto_play()
