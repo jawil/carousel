@@ -6,7 +6,7 @@
      }
      class Slider {
          constructor(el, options = {}) {
-             this.sliderWrap = document.querySelector(el)
+             this.sliderWrap = document.querySelector(el) || document.getElementById(el)
              this.index = 0
              this.settings = Object.assign({}, DEFAULT_OPTIONS, options)
              this.init_data()
@@ -40,13 +40,13 @@
          }
          auto_play() { //自动播放
              clearInterval(this.autotimer)
-             this.autotimer = setInterval(() => {
+             this.autotimer = setInterval(f => {
                  this.index++;
                  this.sliderContent.style.transition = `.5s ${ this.settings.effect}`
                  Slider.set_position(this.sliderContent, -this.index * this.iWidth)
                  Slider.set_focusIcon(this.sliderFlag, this.index % (this.length / 2));
                  (this.index === 0) && (this.index = this.length / 2) //为0时候立即初始化跳转
-                 setTimeout(() => {
+                 setTimeout(f => {
                      if (this.index === this.length - 1) {
                          this.sliderContent.style.transition = "none"
                          this.index = this.length / 2 - 1
@@ -56,9 +56,9 @@
              }, this.settings.interval)
          }
          touch_event() { //手指滑动轮播图,滑动距离超过一半才会运动到下一张
-             let isMove = true
-             let isFirst = true
-             let touchStart, touchMove, touchEnd, iStartPageX, iStartPageY
+             let isMove = true,
+                 isFirst = true,
+                 touchStart, touchMove, touchEnd, iStartPageX, iStartPageY
              touchStart = e => {
                  e.preventDefault()
                  e.stopPropagation()
@@ -72,13 +72,12 @@
                  if (!isMove) {
                      return
                  }
-                 let iDisX = (e.changedTouches[0].pageX - iStartPageX)
-                 let iDisY = (e.changedTouches[0].pageY - iStartPageY)
+                 let iDisX = (e.changedTouches[0].pageX - iStartPageX),
+                     iDisY = (e.changedTouches[0].pageY - iStartPageY),
+                     isDown = f => Math.abs(iDisY) > Math.abs(iDisX)
                  if (isFirst) { //判断用户向上还是向下滑动只需要判断一次就行了
                      isFirst = false
-                     if (Math.abs(iDisY) > Math.abs(iDisX)) { //用户向下滑动就不会触发轮播图抖动
-                         isMove = false
-                     }
+                     isDown() && (isMove = false) //用户向下滑动就不会触发轮播图抖动
                  }
                  if (isMove) {
                      this.sliderContent.style.transition = 'none'; //不清楚浏览器自动插入分号的规则千万不要学我
@@ -90,7 +89,7 @@
              touchEnd = e => {
                  let iDisX = e.changedTouches[0].pageX - iStartPageX
                  this.sliderContent.style.transition = `.5s ${ this.settings.effect}`
-                 this.index = this.index === this.length ?//防止诡异的越界，很难重现。。。
+                 this.index = this.index === this.length ? //防止诡异的越界，很难重现。。。
                      (this.length / 2) : (this.index - Math.round(iDisX / this.iWidth))
                  Slider.set_position(this.sliderContent, -this.index * this.iWidth)
                  Slider.set_focusIcon(this.sliderFlag, this.index % (this.length / 2))
