@@ -25,7 +25,7 @@
              this.settings.auto === 1 && this.auto_play()
              this.touch_event()
          }
-         get_element() { //获取元素对象
+         get_element() { // 获取元素对象
              let oUl = this.sliderWrap.querySelectorAll('ul')
              this.sliderContent = oUl[0]
              this.sliderContent.innerHTML += this.sliderContent.innerHTML
