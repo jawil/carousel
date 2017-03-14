@@ -24,6 +24,7 @@
              this.get_element()
              this.settings.auto === 1 && this.auto_play()
              this.touch_event()
+             this.transition_end()
          }
          get_element() { // 获取元素对象
              let oUl = this.sliderWrap.querySelectorAll('ul')
@@ -45,15 +46,17 @@
                  this.sliderContent.style.transition = `.5s ${ this.settings.effect}`
                  Slider.set_position(this.sliderContent, -this.index * this.iWidth)
                  Slider.set_focusIcon(this.sliderFlag, this.index % (this.length / 2));
-                 (this.index === 0) && (this.index = this.length / 2) //为0时候立即初始化跳转
-                 setTimeout(f => {
-                     if (this.index === this.length - 1) {
-                         this.sliderContent.style.transition = "none"
-                         this.index = this.length / 2 - 1
-                         Slider.set_position(this.sliderContent, -this.index * this.iWidth)
-                     }
-                 }, 600)
              }, this.settings.interval)
+         }
+         transition_end() { //动画结束时事件
+             this.sliderContent.addEventListener("webkitTransitionEnd", f => { //动画结束时事件
+                 if (this.index >= this.length - 1) {
+                     this.sliderContent.style.transition = "none"
+                     this.index = this.length / 2 - 1
+                     Slider.set_focusIcon(this.sliderFlag, this.index % (this.length / 2))
+                     Slider.set_position(this.sliderContent, -this.index * this.iWidth)
+                 }
+             }, false)
          }
          touch_event() { //手指滑动轮播图,滑动距离超过一半才会运动到下一张
              let isMove = true,
@@ -82,15 +85,15 @@
                  if (isMove) {
                      this.sliderContent.style.transition = 'none'; //不清楚浏览器自动插入分号的规则千万不要学我
                      (this.index === 0) && (this.index = this.length / 2);
-                     (this.index === this.length - 1) && (this.index = this.length / 2 - 1)
+                     (this.index >= this.length - 1) && (this.index = this.length / 2 - 1)
                      Slider.set_position(this.sliderContent, -this.index * this.iWidth + iDisX)
                  }
              }
              touchEnd = e => {
                  let iDisX = e.changedTouches[0].pageX - iStartPageX
                  this.sliderContent.style.transition = `.5s ${ this.settings.effect}`
-                 this.index = this.index === this.length ? //防止诡异的越界，很难重现。。。
-                     (this.length / 2) : (this.index - Math.round(iDisX / this.iWidth))
+                 this.index = this.index - Math.round(iDisX / this.iWidth)
+                 this.index = this.index === this.length ? (this.length - 1) : this.index
                  Slider.set_position(this.sliderContent, -this.index * this.iWidth)
                  Slider.set_focusIcon(this.sliderFlag, this.index % (this.length / 2))
                  this.auto_play()
@@ -102,3 +105,4 @@
      }
      window.Slider = Slider
  }(window)
+
