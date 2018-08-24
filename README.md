@@ -5,6 +5,7 @@
 >[1.移动端超轻量级轮播图]
 (https://github.com/jawil/slider/tree/master/Mobile-Phone)
 
+
 >[2.兼容IE8的原生JS轮播图(整理中)]()
 
 111
